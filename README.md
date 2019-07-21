@@ -15,8 +15,6 @@ In this tutorial, you’ll learn how to:
 - [Telnyx Call Control Basics](#telnyx-call-control-basics)
   - [Understanding the Command Syntax](#understanding-the-command-syntax)
   - [Telnyx Call Control Commands](#telnyx-call-control-commands)
-  - [Using file generators](#using-generators)
-  - [Adding examples for a new language](#adding-examples-for-a-new-language)
 - [Building an IVR that uses Media Forking](#building-an-ivr-that-uses-media-forking)
 - [Lightning-Up the Application](#lightning-up-the-application)
 - [Listening for UDP](#listening-for-udp)
@@ -125,22 +123,17 @@ function call_control_COMMAND_NAME(f_call_control_id, f_INPUT1, ...){
 There are several aspects of this function that deserve some attention:
 
 - `Function Input Parameters`: to execute every Telnyx Call Control Command you’ll need to feed your function with the following: the `Call Control ID`; and the input parameters, specific to the body of the Command you’re executing. Having these set as function input parameters will make it generic enough to reuse in different use cases:
-
 ```js
 function call_control_COMMAND_NAME(f_call_control_id, f_INPUT)
 ```
-
 All Telnyx Call Control Commands will be expecting the `Call Control ID` except `Dial`. There you’ll get a new one for the leg generated as response.
 
 - `Name of the Call Control Command`: as detailed [here](https://developers.telnyx.com/docs/api/v1/overview), the Command name is part of the API URL. In our code we call that the `action` name, and will feed the POST Request URL later:
-
 ```js
 var cc_action = ‘COMMAND_NAME’
 ```
 
 - `Building the Telnyx Call Control Command`: once you have the Command name defined, you should have all the necessary info to build the complete Telnyx Call Control Command:
-
-
 ```js
 var options = {
     url: 'https://api.telnyx.com/calls/' 
@@ -156,14 +149,11 @@ var options = {
     } 
 };
 ```
-
 In this example you can see that `Call Control ID` and the Action name will feed the URL of the API, both Telnyx Key and Telnyx Secret feed the Authentication headers, and the body will be formed with all the different input parameters  received for that specific Command. 
 
 
 - `Calling the Telnyx Call Control Command`: Having the request  `headers` and `options`/`body` set, the only thing left is to execute the `POST Request` to execute the command. 
-
 For that we are using making use of the node's `request` module:
-
 ```js
  request.post(options,function(err,resp,body){
     if (err) { return console.log(err); }
@@ -257,29 +247,24 @@ function call_control_transfer(f_call_control_id, f_dest, f_orig) {
 function call_control_answer_call(f_call_control_id, f_client_state_s) {
 
     var l_cc_action = 'answer';
-
     var l_client_state_64 = null;
 
     if (f_client_state_s)
         l_client_state_64 = Buffer.from(f_client_state_s).toString('base64');
-
 
     var options = {
         url: 'https://api.telnyx.com/calls/' +
             f_call_control_id +
             '/actions/' +
             l_cc_action,
-
         auth: {
             username: g_telnyx_key,
             password: g_telnyx_secret
         },
-
         form: {
             client_state: l_client_state_64 //if inbound call >> null
         }
     };
-
     request.post(options, function (err, resp, body) {
         if (err) {
             return console.log(err);
@@ -339,12 +324,10 @@ function call_control_hangup(f_call_control_id) {
             f_call_control_id +
             '/actions/' +
             l_cc_action,
-
         auth: {
             username: g_telnyx_key,
             password: g_telnyx_secret
         },
-
         form: {}
     };
 
@@ -388,7 +371,7 @@ rest.post('/'+g_appName+'/mforking', function (req, res) {
 
 This would expose a webhook like the following: 
 
-    https://MY_DOMAIN_URL/telnyx-mforking/mforking
+    https://MY_DOMAIN_URL/demo-mforking/mforking
 
 You probably noticed that `g_appName` in  the previous point. That is part of a set of global variables we are defining with a certain set of info we know we are going to use in this app: TTS parameters, like voice and language to be used, IVR redirecting contact points, and the Media Forking destination address. 
 
@@ -396,7 +379,7 @@ You can set these at the beginning of your code:
 
 ```js
 // Application:
-const g_appName = "telnyx-mforking";
+const g_appName = "demo-mforking";
 
 // TTS Options
 const g_ivr_voice     = 'female';
@@ -542,7 +525,7 @@ var server = rest.listen(8081, function () {
 And start the application by executing the following command:
 
 ```shell
-$ node telnyx-mforking.js
+$ node demo-mforking.js
 ```
 
 ## Listening for UDP
