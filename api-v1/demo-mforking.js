@@ -13,11 +13,6 @@ const g_appName = "telnyx-mforking";
 const g_ivr_voice = 'female';
 const g_ivr_language = 'en-GB';
 
-const g_pstn_destination = '<pstn_number_here>';
-const g_udp_dest = 'udp:<dest_ip_here>:27000';
-const g_udp_tx = 'udp:<dest_ip_here:27001';
-const g_udp_rx = 'udp:<dest_ip_here:27002';
-
 
 // ======= Conventions =======
 // = g_xxx: global variable
@@ -32,12 +27,17 @@ var express = require('express');
 var request = require('request');
 
 
+// =============== Telnyx Account Details ===============
 
-// =============================================== Telnyx Account Details ===============================================
+var configs = fs.readFileSync("telnyx-account.json");
+var jsonConfigs = JSON.parse(configs);
 
-const g_telnyx_key = "<telnyx_key_here>"
-const g_telnyx_secret = "<telnyx_key_here>"
-
+const g_telnyx_api_key_v1 = jsonConfigs.telnyx_api_key_v1;
+const g_telnyx_api_secret_v1 = jsonConfigs.telnyx_api_secret_v1;
+const g_pstn_destination = jsonConfigs.pstn_destination;
+const g_udp_dest = jsonConfigs.udp_destination_ip_port;
+const g_udp_tx = jsonConfigs.udp_destination_tx_ip_port;
+const g_udp_rx = jsonConfigs.udp_destination_rx_ip_port;
 
 const g_serviceName = "MForkingApp"
 
@@ -78,8 +78,8 @@ function call_control_fork_start(f_call_control_id, f_fork_dest, f_rx, f_tx) {
             '/actions/' +
             cc_action,
         auth: {
-            username: g_telnyx_key,
-            password: g_telnyx_secret
+            username: g_telnyx_api_key_v1,
+            password: g_telnyx_api_secret_v1
         },
         form: {
             target: f_fork_dest,
@@ -108,8 +108,8 @@ function call_control_fork_stop(f_call_control_id) {
             '/actions/' +
             cc_action,
         auth: {
-            username: g_telnyx_key,
-            password: g_telnyx_secret
+            username: g_telnyx_api_key_v1,
+            password: g_telnyx_api_secret_v1
         },
         form: {}
     };
@@ -135,8 +135,8 @@ function call_control_transfer(f_call_control_id, f_dest, f_orig) {
             '/actions/' +
             cc_action,
         auth: {
-            username: g_telnyx_key,
-            password: g_telnyx_secret
+            username: g_telnyx_api_key_v1,
+            password: g_telnyx_api_secret_v1
         },
         form: {
             to: f_dest,
@@ -171,8 +171,8 @@ function call_control_answer_call(f_call_control_id, f_client_state_s) {
             l_cc_action,
 
         auth: {
-            username: g_telnyx_key,
-            password: g_telnyx_secret
+            username: g_telnyx_api_key_v1,
+            password: g_telnyx_api_secret_v1
         },
 
         form: {
@@ -205,8 +205,8 @@ function call_control_gather_using_speak(f_call_control_id, f_tts_text, f_gather
             '/actions/' +
             l_cc_action,
         auth: {
-            username: g_telnyx_key,
-            password: g_telnyx_secret
+            username: g_telnyx_api_key_v1,
+            password: g_telnyx_api_secret_v1
         },
         form: {
             payload: f_tts_text,
@@ -241,8 +241,8 @@ function call_control_hangup(f_call_control_id) {
             l_cc_action,
 
         auth: {
-            username: g_telnyx_key,
-            password: g_telnyx_secret
+            username: g_telnyx_api_key_v1,
+            password: g_telnyx_api_secret_v1
         },
 
         form: {}

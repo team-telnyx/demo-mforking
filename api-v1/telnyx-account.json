@@ -1,0 +1,8 @@
+{
+    "telnyx_api_key_v1": "<your-api-v1-key-here>",
+    "telnyx_api_secret_v1": "<your-api-v1-secret-here>",
+    "pstn_destination": "<phone-number-to-call-here>",
+    "udp_destination_ip_port": "<destination-ip:port>",
+    "udp_destination_tx_ip_port": "<destination-tx-ip:port>",
+    "udp_destination_rx_ip_port": "<destination-rx-ip:port>"
+}
