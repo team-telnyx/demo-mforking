@@ -1,0 +1,7 @@
+{
+    "telnyx_api_auth_v2" : "<YourAPIv2KeyGoesHere>",
+    "pstn_destination": "<phone-number-to-call-here>",
+    "udp_destination_ip_port": "<destination-ip:port>",
+    "udp_destination_tx_ip_port": "<destination-tx-ip:port>",
+    "udp_destination_rx_ip_port": "<destination-rx-ip:port>"
+}
