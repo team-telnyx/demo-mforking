@@ -13,11 +13,6 @@ const g_appName = "telnyx-mforking";
 const g_ivr_voice = "female";
 const g_ivr_language = "en-GB";
 
-const g_pstn_destination = "<pstn_number_here>";
-const g_udp_dest = "udp:<dest_ip_here:270010";
-const g_udp_tx = "udp:<dest_ip_here:27001";
-const g_udp_rx = "udp:<dest_ip_here:27002";
-
 // ======= Conventions =======
 // = g_xxx: global variable
 // = f_xxx: function variable
@@ -29,9 +24,17 @@ const g_udp_rx = "udp:<dest_ip_here:27002";
 var express = require("express");
 var request = require("request");
 
-// =============================================== Telnyx Account Details ===============================================
+// =============== Telnyx Account Details ===============
 
-const g_telnyx_api_auth_v2 = require("./telnyx-account-v2");
+var configs = fs.readFileSync("telnyx-account.json");
+var jsonConfigs = JSON.parse(configs);
+
+const g_telnyx_api_auth_v2 = jsonConfigs.telnyx_api_auth_v2;
+const g_pstn_destination = jsonConfigs.pstn_destination;
+const g_udp_dest = jsonConfigs.udp_destination_ip_port;
+const g_udp_tx = jsonConfigs.udp_destination_tx_ip_port;
+const g_udp_rx = jsonConfigs.udp_destination_rx_ip_port;
+
 const g_serviceName = "MForkingApp";
 
 // ================================================ RESTful API Creation ================================================
